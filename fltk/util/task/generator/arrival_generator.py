@@ -109,8 +109,7 @@ class ExperimentGenerator(ArrivalGenerator):
         """
         self.logger.info(f"Creating task for {task_id}")
         job: JobDescription = self.job_dict[task_id]
-        parameters: JobClassParameter = \
-            choices(job.job_class_parameters, [param.class_probability for param in job.job_class_parameters])[0]
+        parameters: JobClassParameter = choices(job.job_class_parameters, [param.class_probability for param in job.job_class_parameters])[0]
         priority = choices(parameters.priorities, [prio.probability for prio in parameters.priorities], k=1)[0]
 
         inter_arrival_ticks = np.random.poisson(lam=job.arrival_statistic)
