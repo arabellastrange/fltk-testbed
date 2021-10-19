@@ -31,12 +31,12 @@ class Cifar10CNN(nn.Module):
         self.bn8 = nn.BatchNorm2d(256)
         self.pool4 = nn.MaxPool2d(kernel_size=2)
         self.fc1 = nn.Linear(256 * 2 * 2, 128)
-
+        #
         self.softmax = nn.Softmax()
         self.fc2 = nn.Linear(128, 10)
-        self.fc1 = nn.Linear(32 * 16 * 16, 128)
-        self.softmax = nn.Softmax()
-        self.fc2 = nn.Linear(128, 10)
+        # self.fc1 = nn.Linear(32 * 16 * 16, 128)
+        # self.softmax = nn.Softmax()
+        # self.fc2 = nn.Linear(128, 10)
 
     def forward(self, x):
         x = self.bn1(F.relu(self.conv1(x)))
@@ -55,10 +55,10 @@ class Cifar10CNN(nn.Module):
         x = self.bn8(F.relu(self.conv8(x)))
         x = self.pool4(x)
 
-        x = x.view(-1, 128 * 4 * 4)
+        # x = x.view(-1, 128 * 4 * 4)
         # layer 4
         x = x.view(-1, 256 * 2 * 2)
-        x = x.view(-1, 32 * 16 * 16)
+        # x = x.view(-1, 32 * 16 * 16)
         x = self.fc1(x)
         x = self.softmax(self.fc2(x))
 

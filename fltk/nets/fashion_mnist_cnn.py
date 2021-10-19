@@ -34,15 +34,14 @@ class FashionMNISTCNN(nn.Module):
 
         self.fc = nn.Linear(128, 10)
         self.flatten = nn.Flatten()
-        self.fc = nn.Linear(3136, 10)
+        # self.fc = nn.Linear(3136, 10)
 
     def forward(self, x):
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        print("size: ", self.flatten(x).shape)
-
-        # x = self.fc(self.flatten(x))
+        # print("size: ", self.flatten(x).shape)
+        x = self.fc(self.flatten(x))
 
         return x
