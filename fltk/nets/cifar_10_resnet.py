@@ -62,7 +62,7 @@ class Bottleneck(nn.Module):
 
 
 class Cifar10ResNet(nn.Module):
-    def __init__(self, block: nn.Module = BasicBlock, num_blocks=[2, 2, 2, 2], num_classes=10):
+    def __init__(self, block: nn.Module = BasicBlock, num_blocks=[2], num_classes=10):
         super(Cifar10ResNet, self).__init__()
         self.in_planes = 64
 
@@ -73,7 +73,7 @@ class Cifar10ResNet(nn.Module):
         self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
         self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)
         self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
-        self.linear = nn.Linear(512 * block.expansion, num_classes)
+        self.linear = nn.Linear(64 * block.expansion, num_classes)
 
     def _make_layer(self, block, planes, num_blocks, stride):
         strides = [stride] + [1] * (num_blocks - 1)
@@ -89,9 +89,15 @@ class Cifar10ResNet(nn.Module):
         out = self.layer2(out)
         out = self.layer3(out)
         out = self.layer4(out)
-        out = F.avg_pool2d(out, 4)
+        print("before pool2d: ", out.shape)
+        print("out size: ", out.size)
+        out = F.avg_pool2d(out, out.size()[3])
+        print("before view:", out.shape)
+        print("out.size(0): ", out.size(0))
         out = out.view(out.size(0), -1)
+        print("before linear:", out.shape)
         out = self.linear(out)
+        print("after linear: ", out.shape)
         return out
 
 
