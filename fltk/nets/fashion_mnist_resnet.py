@@ -48,18 +48,18 @@ class FashionMNISTResNet(nn.Module):
             nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
-        # self.block2 = nn.Sequential(ResNet_block(64, 64, 2, True),
-        #                             ResNet_block(64, 128, 2),
-        #                             ResNet_block(128, 256, 2),
-        #                             ResNet_block(256, 512, 2))
-        self.block2 = nn.Sequential(ResNet_block(64, 64, 2, True))
+        self.block2 = nn.Sequential(ResNet_block(64, 64, 2, True),
+                                    ResNet_block(64, 128, 2),
+                                    ResNet_block(128, 256, 2),
+                                    ResNet_block(256, 512, 2))
+        # self.block2 = nn.Sequential(ResNet_block(64, 64, 2, True))
         # Set to adaptive as ResNet default average pool is not compatible with shape
         # (512, 1, 1) and kernel size=3 (... - 1 in size, so needs padding or AdaptiveAvgPool2d).
         self.block3 = nn.AdaptiveAvgPool2d((1, 1))
         # Instead of reshape/view use Flatten layer to perform flattening for 'Dense' layer for readability.
         self.flatten = nn.Flatten()
-        # self.Dense = nn.Linear(512, num_classes)
-        self.Dense = nn.Linear(64, num_classes)
+        self.Dense = nn.Linear(512, num_classes)
+        # self.Dense = nn.Linear(64, num_classes)
 
     def forward(self, x):
         y = self.block1(x)
